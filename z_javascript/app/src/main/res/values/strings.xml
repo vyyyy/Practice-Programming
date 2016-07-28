@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">JavaScript</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_list">JavaScript</string>
+    <string name="title_activity_note">NoteActivity</string>
+    <string name="title_activity_scrolling">JavaScript</string>
+    <string name="content_description">JavaScript</string>
+
+
+</resources>

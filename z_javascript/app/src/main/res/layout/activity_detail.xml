@@ -1,0 +1,28 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2F2D37">
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="#2F2D37"
+        android:textSize="24sp"
+        android:fontFamily="roboto"
+        android:textColor="#eeeeee"/>
+
+    <TextView
+        android:id="@+id/more_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_below="@+id/textview"
+        android:background="#2F2D37"
+        android:textSize="24sp"
+        android:fontFamily="roboto-light"
+        android:textColor="#eeeeee"/>
+
+</RelativeLayout>
