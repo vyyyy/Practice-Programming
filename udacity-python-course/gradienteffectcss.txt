@@ -1,0 +1,12 @@
+.row-alt {
+  background: #337ab7;
+  background: -webkit-linear-gradient(to right, #f9c053, #f6cbd3);
+  background:         -webkit-linear-gradient(left, #f9c053, #f6cbd3);
+  background:         linear-gradient(to right, #, #f6cbd3);
+  padding: 44px 0 22px 0;
+}
+
+<section class="row-alt">
+  <div class="lead container">
+  </div>
+</section>
