@@ -1,0 +1,24 @@
+Training an image classifier using TensorFlow. 
+Introduction:
+TensorFlow is an open source machine learning library, which can be used for image classification through deep learning. Deep learning is especially powerful in that it’s not a requirement to manually define features for input. The neural network is fed raw pixels from an image as the feature. The pixels are represented as an array of numbers. The dataset is provided in the codelab. The training data contains a list of labelled images of different types of flowers (e.g. file name: rose1.png / label: Rose).  
+The classifier is a function such that f(x) = y, where x is a 2D array of pixels (from the image) and y is the label (name of the flower).
+Deep learning uses neural networks as the classifier. A simple neural network architecture can be represented as containing an input layer, one or more hidden layers and the output layer. 
+TensorFlow sets up a pre-trained neural network for us to use. Inception is an existing open source image classifier used by Google. Inception can be retrained using a technique called retraining (also known as Transfer Learning) on our dataset.     
+This allows us to use far less training data and training time whilst still maintaining high accuracy. 
+
+Problem: 
+Train an image classifier known as Inception on a dataset of five types of flowers. 
+
+Method:
+Follow along with the TensorFlow for Poets codelab.  
+1. Get the docker toolbox by clicking the ‘Download the Docker Toolbox’ link.
+2. Launch the docker terminal.
+3. Run ‘hello-world’.
+4. I recommend following the VirtualBox setup on your machine to run the training faster. 
+5. Within the docker terminal, download the dataset containing images of flowers.
+6. I recommend following the Optional: But I’m in a hurry! set of commands that remove 3 out of the 5 folders containing the images. You’ll be left with two folders containing two sets of flower images. 
+7. Use ‘git pull’ to update the TensorFlow tools. 
+8. Copy and paste the one big command from step 5: Re(training) Inception. This step took 30 minutes on my computer (old MacBook Air).
+9. After training is complete, run the label_image.py script. 
+10. Run it with an example of an image of a rose. 
+11. The expected output should have the rose label at the top with a score of 0.99 and other label (remember we’re only using two sets of flower images - roses and daisies) on the bottom with a very, very, very low score of confidence. 
