@@ -1,0 +1,40 @@
+Introduction: 
+Follow along to this tutorial by Francois Chollet at https://blog.keras.io/building-powerful-image-classification-models-using-very-little-data.html
+
+Problem: Train a convolutional neural network (convnet) on a small dataset.
+
+Used:
+Dataset from Kaggle available at https://www.kaggle.com/c/dogs-vs-cats/data
+Theano
+Keras (the deep learning library for Python)
+Numpy
+Scipy
+PIL
+
+Method:
+1. $ cd ~/desktop
+2. $ mkdir data && cd $_
+3. $ mkdir train && mkdir validation
+4. $ cd train && mkdir dogs && mkdir cats
+5. $ cd ../validation && mkdir dogs && mkdir cats
+6. Basically this will setup the data folder to contain images transferred from Kaggle dataset.
+7. The data/train/dogs and data/train/cats subdirectories should contain a 1000 images each of dogs and cats, respectively. 
+8. The data/validation/dogs and data/validation/cats subdirectories should contain 400 images each. 
+9. $ mkdir preview (at desktop)
+10. Add the data augmentation code into a script and name it, e.g. krcatest.py
+11. Run krcatest.py, e.g. $ python krcatest.py 
+This should have added 21 new images augmented from a single image (the first image cat.0.jpg) from data/train/cat.
+12. Run the classifier_from_little_data_script_1.py script, 
+e.g. $ python classifier_from_little_data_script_1.py
+
+At this point, desktop should contain: the data folder, the krcatest.py script and the classifier_from_little_data_script_1.py script.
+
+Based on train time, taking 400s per epoch the estimated time to completion: ~5.5 hours.
+
+Observations:
+1. Started 5.36pm 13 August 2016. 
+2. Epoch 1/50 took 445s with loss: 0.7131 - acc: 0.5250 - val_loss: 0.6879 - val_acc: 0.5050
+3. The validation accuracy took 8 epochs to jump from 50% to 70% and 31 epochs to reach 80%. Some fluctuations in val_acc. I thought it should just increase with every cycle?
+4. Epoch 50/50 took 562s with loss: 0.3388 - acc: 0.8635 - val_loss: 0.5270 - val_acc: 0.7887
+5. Completed 1:37am 14 August 2016. Ended up running for 8 hours! #ricketyoldMacBookAir
+6. Generated a file, first_try.h5 that contains saved weights.  
