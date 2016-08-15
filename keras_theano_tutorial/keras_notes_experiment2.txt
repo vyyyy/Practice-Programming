@@ -9,7 +9,7 @@ Numpy
 Scipy
 PIL
 
-*The classifier_from_little_data_script_2.py script from here is different to the original code from the blog. I used Python 3.5 and ran into some issues. I made two additions to the code: 
+*The classifier_from_little_data_script_2.py script from here is different to the original code from the blog.  I used Python 3.5 and ran into some issues. I made two additions to the code: 
 
 1. Added ‘wb’ and ‘rb’ when this error was raised “TypeError: write() argument must be str, not bytes”.
 In the function save_bottleneck_features(): 
@@ -23,7 +23,7 @@ In the function train_top_model():
     …
     validation_data = np.load(open('bottleneck_features_validation.npy', 'rb'))
 
-2. Used double // instead of single / to denote integer division, a crucial change in Python 3 from Python 2. When this error was raised: “TypeError: can’t multiply sequence by non-int of type ‘float’”. 
+2. Used double // instead of single / to denote integer division, a crucial change in Python 3 from Python 2.  When this error was raised: “TypeError: can’t multiply sequence by non-int of type ‘float’”. 
 In the function train_top_model():
     …
     train_labels = np.array([0] * (nb_train_samples // 2) + [1] * (nb_train_samples // 2))
@@ -39,6 +39,6 @@ $ python classifier_from_little_data_script_2.py
 Notes:
 1. Epoch 1/50 gained a 88.5% validation accuracy, which reached 90.5% by epoch 50.
 2. It took 1 hour for it to find the 800 images from the validation data. (Why?).
-However, the time for each epoch only varied from 8 seconds to 50 seconds (the expected time is supposed to be 1s/epoch on CPU - meh ¯\_(ツ)_/¯). 
+However, the time for each epoch only varied from 8 seconds to 50 seconds  (the expected time is supposed to be 1s/epoch on CPU - meh ¯\_(ツ)_/¯). 
 3. Generated three files, bottleneck_features_train.npy, bottleneck_features_validation.npy and bottleneck_fc_model.h5.  
-4. I ran this script 5 times over two days because of the exceptions raised each time and each run was time intensive. The fifth time was the charm! 
+4. I ran this script 5 times over two days because of the exceptions raised each time and each run was time intensive.  The fifth time was the charm! 
