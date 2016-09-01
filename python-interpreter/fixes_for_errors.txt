@@ -1,0 +1,4 @@
+Three errors. 
+1. NameError: name 'collections' is not defined. Fix: use ‘import collections’. 
+2. NameError: name 'operator' is not defined. Fix: use ‘import operator’.
+3. ValueError: '__doc__' in __slots__ conflicts with class variable. Fix: remove the docstring. 
