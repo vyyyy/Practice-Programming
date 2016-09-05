@@ -1,0 +1,51 @@
+Introduction: Follow along with the Deep MNIST for Experts tutorial at https://www.tensorflow.org/versions/r0.10/tutorials/mnist/pros/index.html
+
+Problem: Improve accuracy of our model by using a convolutional neural network.
+
+Used:
+Tensorflow  
+MNIST dataset
+
+Method:
+1. Run deep_mnist_convnet.py, e.g. $ python deep_mnist_convnet.py
+
+Observations:
+1. When running the script, the expected output should be: 
+Extracting MNIST_data/train-images-idx3-ubyte.gz
+Extracting MNIST_data/train-labels-idx1-ubyte.gz
+Extracting MNIST_data/t10k-images-idx3-ubyte.gz
+Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
+step 0, training accuracy 0.06
+step 100, training accuracy 0.86
+step 200, training accuracy 0.94
+…
+step 19800, training accuracy 1
+step 19900, training accuracy 1
+test accuracy 0.9917
+
+This means the model achieved 99% accuracy on the testing data. 
+
+2. Based on the tutorial, the expected time to train should be ~30 mins.
+Began: 5.29pm. Completed: 9.47pm. So it took 8 times longer on my #ricketyoldmacbookair. 
+
+Errors:
+1. The first time I ran the script, I got this error message: 
+Traceback (most recent call last):
+  File "deepmnist_convnet.py", line 32, in <module>
+    x_image = tf.reshape(x, [-1,28,28,1])
+NameError: name 'x' is not defined
+
+Error messages aren’t scary, they’re really helpful! Comparing the code from the previous script (mnist_lnrclssfr.py), where x and y_ are defined. The tutorial doesn’t mention copying and pasting the code from importing tensorflow and mnist dataset. (but that’s okay, I did add all of that code but forgot about x and y_ as in the placeholders for input images and output classes, respectively.) Also, it highlights my knowledge gaps and that’s good! Let’s be systematic in our debugging. 
+I added the line of code that defines x to resolve that error but we should expect that if we ran the script after just adding x that there should be an error saying that we didn’t define y_. 
+
+Ran the script and sure enough we get this error:
+Traceback (most recent call last):
+  File "deepmnist_convnet.py", line 59, in <module>
+    cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv), reduction_indices=[1]))
+NameError: name 'y_' is not defined
+
+Awesome! We expected this and know what we have to do, just copy and paste the line of code defining y_ and run the script! yay! it’s working! :) 
+
+Additional reading:
+1. ReLU - https://en.wikipedia.org/wiki/Rectifier_(neural_networks)
+Rectified Linear Units (or ReLU) are neurons used in this convnet. 

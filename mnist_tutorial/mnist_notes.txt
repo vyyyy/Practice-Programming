@@ -1,0 +1,26 @@
+Introduction: Run the hello world of machine learning. Follow along to the MNIST for ML Beginners tutorial at https://www.tensorflow.org/versions/r0.10/tutorials/mnist/beginners/index.html#mnist-for-ml-beginners.
+
+Problem: Train a machine learning model to predict which number is shown in an image of a handwritten digit. 
+
+Used:
+Tensorflow
+MNIST dataset
+
+Method:
+1. Run mnist_lnrclssfr.py, e.g. $ python mnist_lnrclssfr.py
+
+Observations:
+1. When running the script, the expected output should be:
+Extracting MNIST_data/train-images-idx3-ubyte.gz
+Extracting MNIST_data/train-labels-idx1-ubyte.gz
+Extracting MNIST_data/t10k-images-idx3-ubyte.gz
+Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
+0.918
+
+This means the script downloaded the MNIST dataset successfully (a folder named MNIST_data will have been created for you) and that the model achieved a ~91% accuracy when predicting what number the handwritten digit in the image was.
+The script took ~10 seconds to execute. (WOW! I know it’s a simple model but how is it so fast?.)
+
+Errors:
+1. debugging related - moved the line declaring and initialising the ‘sess’ variable before the for loop when error was raised. 
+
+2. troubleshooting related - when downloading tensorflow for Python 3.5/OSX, I used pip instead of pip3. pip3 caused a traceback error with something related to the conda distribution. 
