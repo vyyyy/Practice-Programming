@@ -1,0 +1,152 @@
+Introduction: 
+Recurrent Neural Networks are stateful models using memory (LSTM) to update the prediction (output) where the output can be used as input cyclically. We can provide input data in text form to the RNN. Let’s pull data from The Newton Project, an online repository of Sir Isaac Newton’s (scientific, mathematical, personal) writings. Interestingly, this is such a valuable resource (we’re not limited by the amount of data) as Newton wrote extensively. I’m limited by compute power (no access to gpu/cuda setup, cpu only), which is time consuming and not knowing ML theory completely. (I’ll try not to break anything.) This tutorial is a great resource learning how RNNs work and to train a RNN with my own dataset!   
+1. The Unreasonable Effectiveness of Recurrent Neural Networks by Andrej Karpathy: http://karpathy.github.io/2015/05/21/rnn-effectiveness/
+2. The torch-rnn implementation by Justin Johnson: https://github.com/jcjohnson/torch-rnn
+3. OS X installation for torch tutorial by Jeff Thompson: http://www.jeffreythompson.org/blog/2016/03/25/torch-rnn-mac-install/
+
+Problem: Train a RNN on some input data to generate new text one character at a time.
+
+Used:
+torch-rnn
+2.04MB dataset (mostly English, some Latin and French) compiled from The Newton Project: http://www.newtonproject.sussex.ac.uk/prism.php?id=1
+
+Method:
+1. Follow along to the directions set out in the OSX installation for torch tutorial. 
+
+At the bash install-deps step (after git clone torch), it caused an exception:
+
+warning: unable to unlink .yardopts: Permission denied
+warning: unable to unlink CONTRIBUTING.md: Permission denied
+warning: unable to unlink SUPPORTERS.md: Permission denied
+fatal: cannot create directory at '.github': Permission denied
+Error: Failure while executing: git pull --quiet origin refs/heads/master:refs/remotes/origin/master
+
+Googled the error message and it has something to do with home-brew. (Notes: 1.) 
+Read a few SO threads and verified from multiple sources to use: 
+me@me torch $ sudo chown -R $(whoami):admin /usr/local
+me@me torch $ cd /usr/local
+me@me local $ git reset --hard origin/master
+
+Go back to torch:
+me@me local $ cd ~/torch
+me@me torch $ bash install-deps
+me@me torch $ ./install.sh
+
+Prompted to prepend torch install to .bashrc and selected ‘yes’.
+Opened a new terminal window, typed in th and it entered the torch prompt. 
+Skipped the cuda installs.
+
+2. getting hdf5 library for lua. 
+me@me ~ $ brew tap homebrew/science
+me@me ~ $ brew install hdf5
+
+3. The following commands download the Torch-specific HDF5 implementation and installs them:
+me@me ~ $ cd ~/torch
+me@me torch $ git clone git@github.com:deepmind/torch-hdf5.git
+
+There was a ssh error so I used git clone from DeepMind’s github available at: https://github.com/deepmind/torch-hdf5
+Then,
+me@me torch $ cd torch-hdf5
+me@me torch $ luarocks make hdf5-0-0.rockspec
+
+4. I already have h5py for python (you can check by running ‘python import h5py’, if there are no errors then you have it!).
+
+5. Install torch-rnn:
+cd into torch from torch-hdf5 then git clone the repo available at:
+https://github.com/jcjohnson/torch-rnn
+
+6. cd into torch-rnn and run the python preprocessor script.
+
+7. I created an input data txt file called newtonfiles.txt, which I saved in the data/ folder.
+
+8. Run the following command.
+me@me torch $ python scripts/preprocess.py --input_txt data/newtonfiles.txt --output_h5 data/newtonfiles.h5 --output_json data/newtonfiles.json
+
+Ran the script, which threw the first error then ran again, which threw the second error.
+(1)   File "scripts/preprocess.py", line 39
+    print 'Total vocabulary size: %d' % len(token_to_idx)
+                                    ^
+SyntaxError: invalid syntax
+
+Since I’m using Python 3 and the preprocess.py script contains the print statement instead of print as a function, I just added brackets around all args to print in the preprocess.py script.
+
+(2) Total vocabulary size: 194
+Total tokens in file: 2034799
+  Training size: 1627841
+  Val size: 203479
+  Test size: 203479
+Using dtype  <class 'numpy.uint8'>
+Traceback (most recent call last):
+  File "scripts/preprocess.py", line 90, in <module>
+    'idx_to_token': {v: k for k, v in token_to_idx.iteritems()},
+AttributeError: 'dict' object has no attribute 'iteritems'
+
+Again, this was a Python 2 to 3 related error. Found a helpful response from SO (Notes: 2.) to replace iteritems() call on token_to_idx (dict) with items() across the script. So the new script now reads: token_to_idx.items()
+
+Run the command and finally, the correct output:
+Total vocabulary size: 194
+Total tokens in file: 2034799
+  Training size: 1627841
+  Val size: 203479
+  Test size: 203479
+Using dtype  <class 'numpy.uint8'>
+
+And as expected within data/ there were two output files newtonfiles.h5 and newtonfiles.json generated.
+
+9. The Training step!
+Ran this command with the time and gpu -1 flag (to disable the default gpu setting because we’re running on cpu):
+me@me torch-rnn $ th train.lua —gpu -1 input_h5 data/newtonfiles.h5 -input_json data/newtonfiles.json
+
+Which threw this error:
+
+Error: unable to locate HDF5 header file at hdf5.h
+stack traceback:
+	[C]: in function 'error'
+	/Users/user/torch/install/share/lua/5.1/trepl/init.lua:384: in function 'require'
+	train.lua:6: in main chunk
+	[C]: in function 'dofile'
+	…user/torch/install/lib/luarocks/rocks/trepl/scm-1/bin/th:145: in main chunk
+	[C]: at 0x0105154d10
+
+It’s really common so I found this link (Notes: 3.) really useful.
+Essentially, follow this path to the config.lua file (/home/marcus/torch/install/share/lua/5.1/hdf5/config.lua) where you need to add the path to locate hdf5 
+(e.g. hdf5._config = {HDF5_INCLUDE_PATH = "", HDF5_INCLUDE_PATH = "/usr/include", HDF5_INCLUDE_PATH = "/usr/local/include", HDF5_INCLUDE_PATH = "/usr/local/Cellar/hdf5/1.8.16_1/include”,). As you can see I took precautions to the max and added a whole bunch of the suggestions because I was unsure of which path it is.
+
+So, finally, ran the training command again. And the expected output was:
+
+Running in CPU mode	
+Epoch 1.00 / 50, i = 1 / 32550, loss = 5.262547	
+Epoch 1.00 / 50, i = 2 / 32550, loss = 5.133157	
+Epoch 1.00 / 50, i = 3 / 32550, loss = 4.912663	
+…
+Epoch 51.00 / 50, i = 32548 / 32550, loss = 1.241104	
+Epoch 51.00 / 50, i = 32549 / 32550, loss = 1.216210	
+Epoch 51.00 / 50, i = 32550 / 32550, loss = 1.175306	
+val_loss = 	1.3916651481464	
+
+real	636m55.827s
+user	656m22.011s
+sys	18m29.028s
+
+
+The tutorial mentions it takes 1 hour on a gpu/cuda setup but we’re on a late 2010 11” MacBook Air so we know this gon take some time. This is why I included time because I’ve been eye-balling all my previous training times and learned about time, which is really cool! Anyway, ran ~5pm and it took about 20 mins to complete 2 epochs. So it should take ~8.5 hours for 50 epochs on cpu (positive outcome). Ran at ~5:08pm (6/10/2016) and completed at ~3.45am the following day. 
+
+10. Generate some output. I checked the cv/ folder to see which checkpoint.t7 file was most recently generated (ie. highest number) and it was checkpoint_32550.t7 
+
+Also, I decided to use the temperature flag at 0.5:
+me@me torch-rnn $ th sample.lua —gpu -1 -checkpoint cv/checkpoint_32550.t7 -length 2000 -temperature 0.5 > newtonfiles_output.txt
+
+11. Tested using different temperature values, the corresponding output are included in the newtonfiles_output.txt file.
+
+Notes:
+1. SO threads detailing a fix for home brew exception from step 1.
+(https://github.com/Homebrew/legacy-homebrew/issues/49879)
+(http://apple.stackexchange.com/questions/231843/im-getting-errors-when-i-try-to-do-brew-update)
+(http://stackoverflow.com/questions/36120545/cannot-update-brew-in-mac-os-x-el-capitan-and-keep-getting-a-load-error-with-re)
+(https://github.com/Homebrew/legacy-homebrew/issues/2906)
+
+2. SO thread detailing fix for the second error from step 8.
+(http://stackoverflow.com/questions/30418481/error-dict-object-has-no-attribute-iteritems-when-trying-to-use-networkx)
+
+3. Link from step 9 to fix the hdf5 error.
+(https://github.com/jcjohnson/torch-rnn/issues/58#issuecomment-239390012) 
