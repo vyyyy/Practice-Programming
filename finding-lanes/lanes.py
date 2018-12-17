@@ -91,6 +91,8 @@ lane_image = np.copy(image)
 # # replace cv2 with plt. use show function from plt.
 # cv2.waitKey(0)
 
+# video URL: https://github.com/rslim087a/road-video
+
 cap = cv2.VideoCapture("test2.mp4")
 while(cap.isOpened()):
     _, frame = cap.read()
